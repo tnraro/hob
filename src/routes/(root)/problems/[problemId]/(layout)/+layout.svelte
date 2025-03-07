@@ -18,7 +18,8 @@
   {#if data.hasExplanation}
     {#if data.explanations.length > 0}
       <div class="flex flex-wrap gap-4">
-        <nav class="min-h-30 max-w-sm">
+        <nav class="flex min-h-30 max-w-sm flex-col">
+          <a href="/problems/{page.params.problemId}/new" class={buttonStyle()}>제출하기</a>
           <ul>
             {#each data.explanations as explanation (explanation.id)}
               <li>
@@ -34,8 +35,9 @@
         {@render children()}
       </div>
     {:else}
-      <section class="flex h-30 items-center justify-center rounded-2xl bg-zinc-100 font-semibold">
-        아직 풀이가 없어요
+      <section class="flex h-30 flex-col items-center justify-center gap-y-2 rounded-2xl bg-zinc-100">
+        <h1 class="font-semibold">아직 풀이가 없어요</h1>
+        <a href="/problems/{page.params.problemId}/new" class={buttonStyle()}>제출하기</a>
       </section>
     {/if}
   {:else}
