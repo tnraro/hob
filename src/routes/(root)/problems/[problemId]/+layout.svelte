@@ -29,7 +29,7 @@
     <div class="text-sm">
       <span class="font-semibold">tags:</span>
       {#each tags as tag}
-        <a href="/tags/{tag}" class="not-last:after:content-[',_']">{tag}</a>
+        <span class="not-last:after:content-[',_']">{tag}</span>
       {/each}
     </div>
     <Accordion type="single">
