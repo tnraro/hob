@@ -1,28 +1,12 @@
 import { getUserOrRedirect } from "$lib/server/auth";
 import { db } from "$lib/server/db/index.js";
-import { explanations, problems, users } from "$lib/server/db/schema.js";
+import { explanations, users } from "$lib/server/db/schema.js";
 import { single } from "$lib/utils/array/single";
-import { error } from "@sveltejs/kit";
 import { and, eq } from "drizzle-orm";
-import { z } from "zod";
 
-const paramSchema = z.coerce.number().min(0);
-
-export async function load({ locals, params }) {
-  const problemId = paramSchema.parse(params.problemId);
+export async function load({ locals, parent }) {
   const user = getUserOrRedirect(locals);
-  const problem = single(
-    await db
-      .select({
-        id: problems.id,
-        title: problems.title,
-        url: problems.url,
-        no: problems.no,
-      })
-      .from(problems)
-      .where(eq(problems.id, problemId)),
-  );
-  if (problem == null) throw error(404);
+  const { problem } = await parent();
 
   const hasExplanation =
     single(

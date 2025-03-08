@@ -3,19 +3,24 @@
   import { tv } from "tailwind-variants";
 
   const style = tv({
-    base: "flex flex-col gap-2",
+    slots: {
+      base: "flex flex-col gap-2",
+      error: "inline-flex h-8 items-center rounded bg-red-50 px-3 text-red-600",
+    },
   });
 </script>
 
 <script lang="ts">
-  type Props = FieldErrorsProps & { class?: string; children?: never };
-  let { class: className, ...rest }: Props = $props();
+  type Props = FieldErrorsProps & { class?: string; errorClass?: string; children?: never };
+  let { class: className, errorClass, ...rest }: Props = $props();
+
+  let _style = $derived(style());
 </script>
 
-<FieldErrors class={style({ className })} {...rest}>
+<FieldErrors class={_style.base({ className })} {...rest}>
   {#snippet children({ errors, errorProps })}
     {#each errors as error}
-      <div class="rounded-lg bg-red-50 px-4 py-2 text-red-600" {...errorProps}>{error}</div>
+      <div class={_style.error({ className: errorClass })} {...errorProps}>{error}</div>
     {/each}
   {/snippet}
 </FieldErrors>

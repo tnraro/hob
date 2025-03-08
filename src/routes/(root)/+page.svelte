@@ -14,8 +14,17 @@
     <ul>
       {#each data.problems as problem (problem.id)}
         <li>
-          <a class="flex rounded px-2 py-2 hover:bg-zinc-100" href="/problems/{problem.id}">
-            {problem.title}
+          <a
+            class="flex items-center gap-x-4 rounded px-2 py-2 select-none hover:bg-zinc-100"
+            href="/problems/{problem.id}"
+          >
+            <span>
+              {#if problem.no != null}
+                {problem.no}{". "}
+              {/if}
+              {problem.title}
+            </span>
+            <span class="rounded bg-zinc-100 px-1 text-xs text-zinc-800">{problem.difficulty}</span>
           </a>
         </li>
       {/each}

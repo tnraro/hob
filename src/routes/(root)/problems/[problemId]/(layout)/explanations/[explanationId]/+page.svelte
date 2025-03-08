@@ -7,7 +7,7 @@
   let { data } = $props();
 </script>
 
-<div class="flex flex-1 flex-col gap-4">
+<div class="flex flex-1 basis-sm flex-col gap-4">
   <article>
     <h1 class="pl-4">
       <User

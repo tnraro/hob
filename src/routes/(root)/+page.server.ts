@@ -11,7 +11,9 @@ export async function load({ locals, url }) {
   const ps = await db
     .select({
       id: problems.id,
+      no: problems.no,
       title: problems.title,
+      difficulty: problems.difficulty,
     })
     .from(problems)
     .orderBy(desc(problems.id))

@@ -21,7 +21,12 @@ export const problems = sqliteTable(
     id: integer().primaryKey({ autoIncrement: true }),
     url: text().notNull(),
     title: text().notNull(),
+    site: text().notNull(),
     no: integer(),
+    category: text(),
+    difficulty: text(),
+    topics: text({ mode: "json" }).$type<string[]>(),
+    content: text(),
   },
   (t) => [index("problems__url__index").on(t.url)],
 );
@@ -31,10 +36,10 @@ export const explanations = sqliteTable(
     id: integer().primaryKey({ autoIncrement: true }),
     authorId: text()
       .notNull()
-      .references(() => users.id, { onDelete: "no action" }),
+      .references(() => users.id, { onDelete: "cascade" }),
     problemId: integer()
       .notNull()
-      .references(() => problems.id, { onDelete: "no action" }),
+      .references(() => problems.id, { onDelete: "cascade" }),
     content: text().notNull(),
   },
   (t) => [
@@ -48,10 +53,10 @@ export const comments = sqliteTable(
     id: integer().primaryKey({ autoIncrement: true }),
     authorId: text()
       .notNull()
-      .references(() => users.id, { onDelete: "no action" }),
+      .references(() => users.id, { onDelete: "cascade" }),
     explanationId: integer()
       .notNull()
-      .references(() => explanations.id, { onDelete: "no action" }),
+      .references(() => explanations.id, { onDelete: "cascade" }),
     content: text().notNull(),
   },
   (t) => [
