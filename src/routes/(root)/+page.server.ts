@@ -26,7 +26,7 @@ export async function load({ locals, url }) {
     .from(problems)
     .orderBy(desc(problems.id))
     .limit(10)
-    .offset(clamp(page - 1, 0, problemCount) * 10);
+    .offset(clamp((page - 1) * 10, 0, problemCount));
 
   return {
     user,

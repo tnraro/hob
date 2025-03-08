@@ -1,14 +1,17 @@
 import { db } from "$lib/server/db/index.js";
 import { comments, explanations, problems, users } from "$lib/server/db/schema.js";
 import { single } from "$lib/utils/array/single.js";
+import { clamp } from "$lib/utils/number/clamp.js";
 import { error } from "@sveltejs/kit";
-import { eq } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 const paramSchema = z.string();
 
-export async function load({ params }) {
+export async function load({ params, url }) {
   const userId = paramSchema.parse(params.userId);
+
+  const problemPage = Number(url.searchParams.get("sp_page") ?? 1);
 
   const targetUser = single(
     await db
@@ -27,19 +30,37 @@ export async function load({ params }) {
     .$with("meq")
     .as(
       db
-        .selectDistinct({ problemId: explanations.problemId })
+        .selectDistinct({ id: explanations.id, problemId: explanations.problemId })
         .from(explanations)
         .where(eq(explanations.authorId, targetUser.id)),
     );
+
+  const pc = single(
+    await db
+      .with(myExplanationsQuery)
+      .select({
+        count: count(),
+      })
+      .from(myExplanationsQuery),
+  );
+
+  if (pc == null) error(500);
+
+  const solvedProblemCount = pc.count;
 
   const solvedProblems = await db
     .with(myExplanationsQuery)
     .select({
       id: problems.id,
       title: problems.title,
+      no: problems.no,
+      difficulty: problems.difficulty,
     })
     .from(myExplanationsQuery)
-    .innerJoin(problems, eq(problems.id, myExplanationsQuery.problemId));
+    .innerJoin(problems, eq(problems.id, myExplanationsQuery.problemId))
+    .orderBy(desc(myExplanationsQuery.id))
+    .limit(10)
+    .offset(clamp((problemPage - 1) * 10, 0, solvedProblemCount));
 
   const wroteComments = await db
     .select({
@@ -53,6 +74,7 @@ export async function load({ params }) {
   return {
     targetUser,
     solvedProblems,
+    solvedProblemCount,
     wroteComments,
   };
 }
