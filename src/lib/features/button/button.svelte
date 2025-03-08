@@ -16,7 +16,16 @@
         sm: "h-7 px-3 text-sm",
         xs: "h-6 px-2 text-xs",
       },
+      shape: {
+        default: "",
+        icon: "",
+      },
     },
+    compoundVariants: [
+      { size: "md", shape: "icon", class: "w-8 px-0" },
+      { size: "sm", shape: "icon", class: "w-7 px-0" },
+      { size: "xs", shape: "icon", class: "w-6 px-0" },
+    ],
     defaultVariants: {
       variant: "primary",
       size: "md",
