@@ -12,7 +12,8 @@
   type Props = SvelteHTMLElements["a"] & {
     class?: string;
     children?: never;
-    problem: Partial<typeof problems.$inferSelect> & Pick<typeof problems.$inferSelect, "id" | "title">;
+    problem: Partial<typeof problems.$inferSelect & { solved: boolean }> &
+      Pick<typeof problems.$inferSelect, "id" | "title">;
   };
   let { class: className, problem, ...rest }: Props = $props();
 </script>
@@ -24,6 +25,9 @@
     {/if}
     {problem.title}
   </span>
+  {#if problem.solved}
+    <span class="px-1 font-black text-green-600">풂</span>
+  {/if}
   {#if problem.difficulty != null}
     <span class="rounded bg-zinc-100 px-1 text-xs text-zinc-800">{problem.difficulty}</span>
   {/if}
