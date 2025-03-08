@@ -16,7 +16,7 @@
               <a
                 href="/problems/{page.params.problemId}/explanations/{explanation.id}"
                 class="flex rounded px-2 py-2 hover:bg-zinc-100"
-                >{explanation.displayName ?? explanation.username}님의 풀이</a
+                >{explanation.displayName ?? explanation.username} 님의 풀이</a
               >
             </li>
           {/each}

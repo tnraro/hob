@@ -7,4 +7,4 @@
   let { id, displayName, name }: Props = $props();
 </script>
 
-<a class="text-sm font-bold" href="/users/{id}">{displayName ?? name}</a>
+<a class="font-bold" href="/users/{id}">{displayName ?? name}</a>

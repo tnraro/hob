@@ -9,7 +9,12 @@
 </script>
 
 <section>
-  <User id={data.targetUser.id} displayName={data.targetUser.displayName} name={data.targetUser.username} />
+  <div>
+    <User id={data.targetUser.id} displayName={data.targetUser.displayName} name={data.targetUser.username} />
+    {#if data.user.id === data.targetUser.id}
+      <a href="/me">프로필 수정</a>
+    {/if}
+  </div>
   <div>
     푼 문제: {data.solvedProblems.length} 개
   </div>
